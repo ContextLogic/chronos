@@ -60,8 +60,8 @@ export default class JobSummaryModel {
     return new JobSummaryModel(
       store,
       json.name,
-      json.state,
       json.status,
+      json.state,
       json.schedule,
       json.parents,
       json.disabled
