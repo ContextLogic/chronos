@@ -81,6 +81,15 @@ export class JobSummaryStore {
     this.isLoading = true;
     var otherThis = this;
     $.getJSON('v1/scheduler/jobs/summary').done(function(resp) {
+      if (otherThis.jobSummarys.length == 0) {
+        otherThis.jobSummarys = resp.jobs.map(function (json) {
+          return JobSummaryModel.fromJS(otherThis, json);
+        })
+
+        otherThis.isLoading = false;
+        return;
+      }
+
       var serverJobNames = new Set();
       resp.jobs.forEach(json => {
         serverJobNames.add(json.name)
