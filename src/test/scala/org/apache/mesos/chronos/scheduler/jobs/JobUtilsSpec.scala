@@ -42,17 +42,17 @@ class JobUtilsSpec extends SpecificationWithJUnit with Mockito {
   "Can skip forward a job with a monthly period" in {
     val schedule = "R/2012-01-01T00:00:01.000Z/P1M"
     val job = ScheduleBasedJob(schedule, "sample-name", "sample-command")
-    val now = new DateTime()
+    val date = DateTime.parse("2014-04-05T03:17:01.000Z")
 
     // Get the schedule stream, which should have been skipped forward
-    val stream = JobUtils.skipForward(job, now)
+    val stream = JobUtils.skipForward(job, date)
     val scheduledTime = Iso8601Expressions
       .parse(stream.get.schedule, job.scheduleTimeZone)
       .get
       ._2
 
     // Ensure that this job runs on the first of next month
-    scheduledTime.isAfter(now) must beTrue
+    scheduledTime.isAfter(date) must beTrue
     scheduledTime.dayOfMonth().get must_== 1
   }
 
